@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星至艺空 - 个人主页</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
+            background: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') center/cover no-repeat fixed;
+            min-height: 100vh;
+            color: #fff;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* 背景遮罩 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%);
+            z-index: 0;
+        }
+
+        /* 背景装饰 */
+        .background-decoration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: float linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* 主容器 */
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 主卡片 */
+        .main-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            width: 100%;
+            max-width: 1000px;
+            transition: all 0.3s ease;
+            display: flex;
+            gap: 3rem;
+            align-items: stretch;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease-out 0.3s forwards;
+            margin-bottom: 1.5rem;
+        }
+
+        .main-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 35px 70px rgba(0, 0, 0, 0.4);
+        }
+
+        /* 渐显动画 */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 左侧个人信息区域 */
+        .left-section {
+            flex: 1;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease-out 0.6s forwards;
+        }
+
+        /* 右侧服务区域 */
+        .right-section {
+            flex: 1;
+            position: relative;
+            padding-left: 3rem;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease-out 0.9s forwards;
+        }
+
+        /* 分隔线 */
+        .right-section::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 10%;
+            bottom: 10%;
+            width: 2px;
+            background: linear-gradient(to bottom, 
+                transparent 0%, 
+                rgba(255, 255, 255, 0.3) 20%, 
+                rgba(255, 255, 255, 0.6) 50%, 
+                rgba(255, 255, 255, 0.3) 80%, 
+                transparent 100%);
+            border-radius: 1px;
+        }
+
+        /* 头像区域 */
+        .avatar-section {
+            margin-bottom: 2rem;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff9a9e, #fecfef);
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+            border: 3px solid rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            transform: scale(0.8);
+            animation: scaleIn 0.6s ease-out 1.2s forwards;
+        }
+
+        .avatar::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: shine 4s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes scaleIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .name {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .description {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.8;
+            margin-bottom: 2.5rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        /* 联系方式 */
+        .contact-section {
+            margin-top: 2rem;
+        }
+
+        .contact-grid {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            color: #fff;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            font-weight: 500;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .contact-item:nth-child(1) {
+            animation: fadeInUp 0.5s ease-out 1.5s forwards;
+        }
+
+        .contact-item:nth-child(2) {
+            animation: fadeInUp 0.5s ease-out 1.7s forwards;
+        }
+
+        .contact-item:hover {
+            background: rgba(255, 255, 255, 0.35);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .contact-icon {
+            font-size: 1.3rem;
+        }
+
+        /* 服务区域样式 */
+        .services-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .service-card:nth-child(1) {
+            animation: fadeInUp 0.6s ease-out 1.2s forwards;
+        }
+
+        .service-card:nth-child(2) {
+            animation: fadeInUp 0.6s ease-out 1.4s forwards;
+        }
+
+        .service-card:nth-child(3) {
+            animation: fadeInUp 0.6s ease-out 1.6s forwards;
+        }
+
+        .service-card:nth-child(4) {
+            animation: fadeInUp 0.6s ease-out 1.8s forwards;
+        }
+
+        .service-card:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .service-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .service-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        /* 友链区域样式 */
+        .friends-section {
+            margin-top: auto;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease-out 2s forwards;
+        }
+
+        .friends-title {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            background: linear-gradient(135deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .friends-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .friend-link {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            text-decoration: none;
+            color: #fff;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 0.9rem;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .friend-link:nth-child(1) {
+            animation: fadeInUp 0.4s ease-out 2.2s forwards;
+        }
+
+        .friend-link:nth-child(2) {
+            animation: fadeInUp 0.4s ease-out 2.3s forwards;
+        }
+
+        .friend-link:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 页脚信息区域样式 */
+        .footer-section {
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease-out 2.5s forwards;
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .footer-text {
+            font-size: 1.6rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 0.5rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .icp-info {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 500;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        /* 弹窗样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            margin: 15% auto;
+            padding: 2rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #333;
+            position: relative;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.3s ease;
+        }
+
+        .modal.show .modal-content {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .close {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: #333;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .modal-info {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .qr-code {
+            width: 150px;
+            height: 150px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            margin: 1rem auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #999;
+        }
+
+        /* 点击效果 */
+        .click-effect {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            font-weight: 700;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+            opacity: 0;
+            transform: scale(0);
+        }
+
+        .click-effect.show {
+            animation: clickEffectFade 2s ease-out forwards;
+        }
+
+        @keyframes clickEffectFade {
+            0% {
+                opacity: 0;
+                transform: scale(0);
+            }
+            20% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(1) translateY(-80px);
+            }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .main-card {
+                padding: 1.5rem;
+                max-width: 95%;
+                flex-direction: column;
+                gap: 1.5rem;
+                margin-bottom: 1rem;
+            }
+            
+            .right-section {
+                padding-left: 0;
+                padding-top: 1.5rem;
+            }
+            
+            .right-section::before {
+                left: 10%;
+                right: 10%;
+                top: 0;
+                bottom: auto;
+                width: auto;
+                height: 2px;
+                background: linear-gradient(to right, 
+                    transparent 0%, 
+                    rgba(255, 255, 255, 0.3) 20%, 
+                    rgba(255, 255, 255, 0.6) 50%, 
+                    rgba(255, 255, 255, 0.3) 80%, 
+                    transparent 100%);
+            }
+            
+            .name {
+                font-size: 2rem;
+            }
+            
+            .avatar {
+                width: 80px;
+                height: 80px;
+                font-size: 2rem;
+            }
+            
+            .description {
+                font-size: 1rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .contact-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+                justify-items: center;
+            }
+            
+            .contact-item {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .services-title {
+                font-size: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+                margin-bottom: 2rem;
+            }
+            
+            .service-card {
+                padding: 1rem 0.8rem;
+                border-radius: 12px;
+            }
+            
+            .service-icon {
+                font-size: 1.8rem;
+                margin-bottom: 0.6rem;
+            }
+            
+            .service-title {
+                font-size: 1rem;
+                line-height: 1.3;
+            }
+            
+            .friends-section {
+                margin-top: 1.5rem;
+            }
+            
+            .friends-title {
+                font-size: 1.3rem;
+                margin-bottom: 1rem;
+            }
+            
+            .friends-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.8rem;
+            }
+            
+            .friend-link {
+                padding: 0.8rem 0.5rem;
+                font-size: 0.8rem;
+                border-radius: 8px;
+            }
+            
+            .footer-text {
+                font-size: 0.85rem;
+            }
+            
+            .icp-info {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0.8rem;
+            }
+            
+            .main-card {
+                padding: 1.2rem;
+                border-radius: 16px;
+            }
+            
+            .name {
+                font-size: 1.6rem;
+            }
+            
+            .avatar {
+                width: 70px;
+                height: 70px;
+                font-size: 1.6rem;
+            }
+            
+            .description {
+                font-size: 0.9rem;
+            }
+            
+            .contact-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 0.8rem;
+                justify-items: center;
+            }
+            
+            .contact-item {
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .services-title {
+                font-size: 1.3rem;
+            }
+            
+            .services-grid {
+                gap: 0.8rem;
+            }
+            
+            .service-card {
+                padding: 0.8rem 0.6rem;
+            }
+            
+            .service-icon {
+                font-size: 1.5rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .service-title {
+                font-size: 0.9rem;
+            }
+            
+            .friends-grid {
+                gap: 0.6rem;
+            }
+            
+            .friend-link {
+                padding: 0.6rem 0.4rem;
+                font-size: 0.75rem;
+            }
+            
+            .footer-text {
+                font-size: 0.8rem;
+            }
+            
+            .icp-info {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 背景装饰 -->
+    <div class="background-decoration">
+        <div class="floating-particles" id="particles"></div>
+    </div>
+
+    <!-- 主容器 -->
+    <div class="container">
+        <div class="main-card">
+            <!-- 左侧个人信息区域 -->
+            <div class="left-section">
+                <!-- 头像区域 -->
+                <div class="avatar-section">
+                    <div class="avatar">
+                        <i class="fas fa-mountain"></i>
+                    </div>
+                    <h1 class="name">星至艺空</h1>
+                    <p class="description">
+                        热爱艺术与技术的结合，追求美学与功能的平衡。<br>
+                        在代码的世界里寻找诗意，在古典的韵味中探索现代。
+                    </p>
+                </div>
+
+                <!-- 联系方式 -->
+                <div class="contact-section">
+                    <div class="contact-grid">
+                        <div class="contact-item" onclick="showContactModal('email')">
+                            <i class="fas fa-envelope contact-icon"></i>
+                            <span>邮箱</span>
+                        </div>
+                        <div class="contact-item" onclick="showContactModal('wechat')">
+                            <i class="fab fa-weixin contact-icon"></i>
+                            <span>微信</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧服务区域 -->
+            <div class="right-section">
+                <h2 class="services-title">我的服务</h2>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="service-title">小程序开发</div>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                        <div class="service-title">APP制作</div>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <div class="service-title">网站建设</div>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-handshake"></i>
+                        </div>
+                        <div class="service-title">服务外包</div>
+                    </div>
+                </div>
+
+                <!-- 友链区域 -->
+                <div class="friends-section">
+                    <h3 class="friends-title">友情链接</h3>
+                    <div class="friends-grid">
+                        <a href="https://xzliy.cn" target="_blank" class="friend-link">技术博客</a>
+                        <a href="https://xzliy.cn" target="_blank" class="friend-link">下单平台</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 页脚信息区域 -->
+        <div class="footer-section">
+            <div class="footer-text">——————— 不为其他，只为 您 ！ ———————</div>
+            <div class="icp-info">渝ICP备 202201331号-1</div>
+        </div>
+    </div>
+
+    <!-- 联系方式弹窗 -->
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeContactModal()">&times;</span>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <!-- 点击效果容器 -->
+    <div id="click-effects"></div>
+
+    <script>
+        // 创建浮动粒子
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 15;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 10 + 's';
+                particle.style.animationDuration = (Math.random() * 25 + 20) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // 联系方式弹窗
+        function showContactModal(type) {
+            const modal = document.getElementById('contactModal');
+            const modalContent = document.getElementById('modalContent');
+            
+            if (type === 'email') {
+                modalContent.innerHTML = `
+                    <h3 class="modal-title">📧 邮箱联系</h3>
+                    <p class="modal-info">您可以通过以下邮箱联系我：</p>
+                    <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin: 1rem 0; font-family: monospace; font-size: 1.1rem; color: #333;">lizhen@xzliy.com</div>
+                    <p style="font-size: 0.9rem; color: #888;">点击邮箱地址即可复制</p>
+                `;
+            } else if (type === 'wechat') {
+                modalContent.innerHTML = `
+                    <h3 class="modal-title">💬 微信联系</h3>
+                    <p class="modal-info">扫描二维码添加微信：</p>
+                    <div class="qr-code">
+                       <img src="img/wechat.jpg" alt="微信二维码">
+                    </div>
+                    <p style="font-size: 0.9rem; color: #888;">微信号：THZL77</p>
+                `;
+            }
+            
+            modal.style.display = 'block';
+            setTimeout(() => {
+                modal.classList.add('show');
+            }, 10);
+        }
+
+        function closeContactModal() {
+            const modal = document.getElementById('contactModal');
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+
+        // 点击模态框外部关闭
+        window.onclick = function(event) {
+            const modal = document.getElementById('contactModal');
+            if (event.target === modal) {
+                closeContactModal();
+            }
+        }
+
+        // 点击效果
+        const clickTags = [
+            '✨ 星至艺空',
+            '🌟 诗意代码',
+            '💻 古韵今风',
+            '🎨 技艺双修',
+            '📚 美学编程',
+            '🚀 创意无限',
+            '🎵 音律之美',
+            '🌈 多彩人生',
+            '💡 灵感闪现',
+            '🔥 热情满满'
+        ];
+
+        const colors = [
+            '#ffffff', '#f0f0f0', '#e0e0e0', '#ffeb3b',
+            '#ff9800', '#ff5722', '#e91e63', '#9c27b0',
+            '#673ab7', '#3f51b5', '#2196f3', '#00bcd4'
+        ];
+
+        // 点击位置计数器，用于循环显示位置
+        let clickCount = 0;
+        const positions = ['top', 'right', 'bottom', 'left'];
+
+        function createClickEffect(x, y) {
+            const effect = document.createElement('div');
+            const tag = clickTags[Math.floor(Math.random() * clickTags.length)];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            
+            // 根据点击次数确定显示位置
+            const position = positions[clickCount % 4];
+            clickCount++;
+            
+            let offsetX = 0;
+            let offsetY = 0;
+            
+            // 根据位置调整偏移量
+            switch(position) {
+                case 'top':
+                    offsetY = -50;
+                    break;
+                case 'right':
+                    offsetX = 50;
+                    break;
+                case 'bottom':
+                    offsetY = 50;
+                    break;
+                case 'left':
+                    offsetX = -50;
+                    break;
+            }
+            
+            effect.className = 'click-effect';
+            effect.textContent = tag;
+            effect.style.left = (x + offsetX) + 'px';
+            effect.style.top = (y + offsetY) + 'px';
+            effect.style.color = color;
+            effect.style.fontSize = Math.random() * 8 + 18 + 'px';
+            
+            document.getElementById('click-effects').appendChild(effect);
+            
+            // 添加显示类触发动画
+            setTimeout(() => {
+                effect.classList.add('show');
+            }, 10);
+            
+            // 2秒后移除元素
+            setTimeout(() => {
+                if (effect.parentNode) {
+                    effect.parentNode.removeChild(effect);
+                }
+            }, 2000);
+        }
+
+        // 事件监听
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            
+            // 点击事件
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.main-card') && !e.target.closest('.modal')) {
+                    createClickEffect(e.clientX, e.clientY);
+                }
+            });
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
